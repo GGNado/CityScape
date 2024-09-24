@@ -1,0 +1,15 @@
+#FirstJoin
+first_join_message_enabled: true
+first_join_message: "Welcome in the best server EU"
+#NormalJoin
+join_message_enabled: true
+join_message: "Welcome back in the best server EU"
+
+#Towns Config:
+next_id: 1
+create_gold_price: 50
+claim_chunk_price: 5
+new_town_created_message: " has founded a new Town!"
+chunk_already_claim: "This chunk is already claim by someone!"
+only_mayor_message: "Only mayor can do this action!"
+not_part_town: "You are not part of a town!"

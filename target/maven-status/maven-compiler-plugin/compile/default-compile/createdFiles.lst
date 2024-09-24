@@ -1,0 +1,12 @@
+pkg/cityScape/model/Region.class
+pkg/cityScape/manager/ConfigManager.class
+pkg/cityScape/events/PlayerJoinListener.class
+pkg/cityScape/manager/TownManager.class
+pkg/cityScape/manager/RegionManager.class
+pkg/cityScape/CityScape.class
+pkg/cityScape/enums/Role.class
+pkg/cityScape/command/TownCommand.class
+pkg/cityScape/model/Citizen.class
+pkg/cityScape/model/Town.class
+pkg/cityScape/enums/ChunkPermission.class
+pkg/cityScape/manager/CitizenManager.class
