@@ -1,5 +1,7 @@
 package pkg.cityScape.manager;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import pkg.cityScape.CityScape;
@@ -39,6 +41,12 @@ public class TownManager {
         townConfig.set(townKey + ".townName", town.getTownName());
         townConfig.set(townKey + ".goldBank", town.getGoldBank());
         townConfig.set(townKey + ".regionsCount", town.getRegionsCount());
+        townConfig.set(townKey + ".spawn.cords.x", town.getSpawnLocation().getX());
+        townConfig.set(townKey + ".spawn.cords.y", town.getSpawnLocation().getY());
+        townConfig.set(townKey + ".spawn.cords.z", town.getSpawnLocation().getZ());
+        townConfig.set(townKey + ".spawn.cords.world", town.getSpawnLocation().getWorld().getName());
+        townConfig.set(townKey + ".spawn.is_open", town.isSpawnOpen());
+        townConfig.set(townKey + ".spawn.spawn_cost", town.getSpawnCost());
 
         // Inserire UUID del sindaco e vice-sindaco
         System.out.println("F");
@@ -87,18 +95,24 @@ public class TownManager {
                     String townName = townConfig.getString("towns." + key + ".townName");
                     int goldBank = townConfig.getInt("towns." + key + ".goldBank");
                     int regionsCount = townConfig.getInt("towns." + key + ".regionsCount");
+                    Location spawnLocation = new Location(Bukkit.getWorld(townConfig.getString("towns." + key + ".spawn.cords.world")),
+                                                            townConfig.getInt("towns." + key + ".spawn.cords.x"),
+                                                            townConfig.getInt("towns." + key + ".spawn.cords.y"),
+                                                            townConfig.getInt("towns." + key + ".spawn.cords.z"));
+                    boolean isSpawnOpen = townConfig.getBoolean("towns." + key + ".spawn.is_open");
+                    Integer spawnCost = townConfig.getInt("towns." + key + ".spawn.spawn_cost");
 
                     // Recuperare il sindaco e il vice-sindaco
                     Citizen mayor = null;
                     if (townConfig.contains("towns." + key + ".mayorUUID")) {
                         String mayorUUID = townConfig.getString("towns." + key + ".mayorUUID");
-                        mayor = cityScape.getCitizens().get(mayorUUID);
+                        mayor = cityScape.getCitizens().get(UUID.fromString(mayorUUID));
                     }
 
                     Citizen comayor = null;
                     if (townConfig.contains("towns." + key + ".comayorUUID")) {
                         String comayorUUID = townConfig.getString("towns." + key + ".comayorUUID");
-                        comayor = cityScape.getCitizens().get(comayorUUID);
+                        comayor = cityScape.getCitizens().get(UUID.fromString(comayorUUID));
                     }
 
                     // Recuperare la lista dei costruttori (builders)
@@ -106,22 +120,18 @@ public class TownManager {
                     if (townConfig.contains("towns." + key + ".builders")) {
                         for (String builderKey : townConfig.getConfigurationSection("towns." + key + ".builders").getKeys(false)) {
                             String builderUUID = townConfig.getString("towns." + key + ".builders." + builderKey);
-                            Citizen builder = cityScape.getCitizens().get(builderUUID);
+                            Citizen builder = cityScape.getCitizens().get(UUID.fromString(builderUUID));
                             builders.add(builder);
                         }
                     }
 
                     // Recuperare la lista dei cittadini (citizens)
-                    System.out.println("DOVREI AGGIUNGERE!");
                     List<Citizen> citizens = new ArrayList<>();
                     if (townConfig.contains("towns." + key + ".citizens")) {
                         ConfigurationSection citizensSection = townConfig.getConfigurationSection("towns." + key + ".citizens");
-                        System.out.println("A");
                         if (citizensSection != null) {
-                            System.out.println("B");
                             // Ciclo attraverso i cittadini
                             for (String citizenKey : citizensSection.getKeys(false)) {
-                                System.out.println("C");
                                 String citizenUUID = citizensSection.getString(citizenKey); // Ottieni l'UUID del cittadino
                                 //System.out.println("CONFORNTO: " + citizenUUID + " con " + cit);
                                 Citizen citizen = cityScape.getCitizens().get(UUID.fromString(citizenUUID)); // Recupera il cittadino dalla mappa
@@ -142,7 +152,7 @@ public class TownManager {
 
                     // Creare un oggetto Town con le informazioni recuperate
                     HashMap<String, Region> regions = new HashMap<>();
-                    Town town = new Town(townID, townName, goldBank, regionsCount, mayor, comayor, builders, citizens, regions);
+                    Town town = new Town(townID, townName, goldBank, regionsCount, mayor, comayor, builders, citizens, regions, spawnLocation, isSpawnOpen, spawnCost);
 
                     // Aggiungere la città alla mappa
                     towns.put(townID, town);
@@ -159,6 +169,24 @@ public class TownManager {
     public int getNextID(){return townConfig.getInt("next_id");}
     public void updateNextID(){
         townConfig.set("next_id", getNextID() + 1);
+        saveConfig();
+    }
+
+    public void updateTown(String path, Integer value){
+        townConfig.set(path, value);
+        saveConfig();
+    }
+
+    public void updateTown(Location location, Town town){
+        townConfig.set("towns." + town.getId() + ".spawn.cords.x", location.getX());
+        townConfig.set("towns." + town.getId() + ".spawn.cords.y", location.getY());
+        townConfig.set("towns." + town.getId() + ".spawn.cords.z", location.getZ());
+        townConfig.set("towns." + town.getId() + ".spawn.cords.world", location.getWorld().getName());
+        saveConfig();
+    }
+
+    public void updateTown(String path, boolean value){
+        townConfig.set(path, value);
         saveConfig();
     }
 

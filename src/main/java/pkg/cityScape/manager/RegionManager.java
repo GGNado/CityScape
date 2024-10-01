@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import pkg.cityScape.CityScape;
 import pkg.cityScape.enums.ChunkPermission;
 import pkg.cityScape.model.Region;
+import pkg.cityScape.model.Town;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +65,6 @@ public class RegionManager {
 
     public boolean isRegionClaim(Chunk chunk){
         String key = chunk.getX() + ":" + chunk.getZ();
-        System.out.println(key);
         Region region = cityScape.getRegions().get(key);
         return region != null;
         // APPENA PUOI CONTROLLA LE ADIACENZE DEI CHUNK!!!!!!!!!!!!
@@ -111,4 +111,24 @@ public class RegionManager {
         return regions;
     }
 
+    public Boolean isRegionAdjacent(Town town, Chunk chunk) {
+
+        for (Region otherRegion : town.getRegions().values()) {
+            
+            int diffX = Math.abs(otherRegion.getX() - chunk.getX());
+            int diffZ = Math.abs(otherRegion.getZ() - chunk.getZ());
+
+            if ((diffX == 1 && diffZ == 0) || (diffX == 0 && diffZ == 1)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void updateRegion(Region region, String path, boolean value) {
+        String key = "regions." + region.getX() + ":" + region.getZ() + path;
+        regionConfig.set(key, value);
+        saveConfig();
+    }
 }

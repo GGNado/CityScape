@@ -1,5 +1,9 @@
 package pkg.cityScape.model;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,20 +14,26 @@ public class Town {
     private Integer regionsCount;
     private Citizen mayor;
     private Citizen comayor;
+    private Location spawnLocation;
+    private boolean isSpawnOpen;
+    private Integer spawnCost;
     private List<Citizen> builders;
     private List<Citizen> citizens;
     private Map<String, Region> regions; // <X:Y, Region>
 
-    public Town(int id, String townName, Integer goldBank, Integer regionsCount, Citizen mayor, Citizen comayor, List<Citizen> builders, List<Citizen> citizens, Map<String, Region> regions) {
+    public Town(int id, String townName, Integer goldBank, Integer regionsCount, Citizen mayor, Citizen comayor, List<Citizen> builders, List<Citizen> citizens, Map<String, Region> regions, Location spawnLocation, boolean isSpawnOpen, Integer spawnCost) {
         this.id = id;
         this.townName = townName;
         this.goldBank = goldBank;
-        this.regionsCount = regionsCount;
         this.mayor = mayor;
         this.comayor = comayor;
         this.builders = builders;
         this.citizens = citizens;
         this.regions = regions;
+        this.regionsCount = regionsCount;
+        this.spawnLocation = spawnLocation;
+        this.isSpawnOpen = isSpawnOpen;
+        this.spawnCost = spawnCost;
     }
 
     public Town(){
@@ -112,5 +122,37 @@ public class Town {
 
     public void addRegion(Region region){
         this.regions.put(region.getId(), region);
+    }
+
+    public void addGold(Integer gold){
+        this.goldBank += gold;
+    }
+
+    public void removeGold(Integer gold) {
+        this.goldBank -= gold;
+    }
+
+    public Location getSpawnLocation() {
+        return spawnLocation;
+    }
+
+    public void setSpawnLocation(Location spawnLocation) {
+        this.spawnLocation = spawnLocation;
+    }
+
+    public boolean isSpawnOpen() {
+        return isSpawnOpen;
+    }
+
+    public void setSpawnOpen(boolean spawnOpen) {
+        isSpawnOpen = spawnOpen;
+    }
+
+    public Integer getSpawnCost() {
+        return spawnCost;
+    }
+
+    public void setSpawnCost(Integer spawnCost) {
+        this.spawnCost = spawnCost;
     }
 }

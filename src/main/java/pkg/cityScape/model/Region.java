@@ -2,6 +2,7 @@ package pkg.cityScape.model;
 
 import pkg.cityScape.enums.ChunkPermission;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Region {
@@ -21,6 +22,24 @@ public class Region {
         this.z = z;
         this.citizenOwner = citizenOwner;
         this.chunkPermission = chunkPermission;
+    }
+
+    public Region(){
+        this.chunkPermission = new HashMap<>();
+        chunkPermission.put(ChunkPermission.ATTACK_ANIMALS, true);
+        chunkPermission.put(ChunkPermission.ATTACK_MONSTERS, true);
+        chunkPermission.put(ChunkPermission.BREAK, true);
+        chunkPermission.put(ChunkPermission.FARM, true);
+        chunkPermission.put(ChunkPermission.BUILD, true);
+        chunkPermission.put(ChunkPermission.OPEN_CHEST, true);
+        chunkPermission.put(ChunkPermission.USE_FURNACE, true);
+        chunkPermission.put(ChunkPermission.USE_CRAFTING_TABLE, true);
+        chunkPermission.put(ChunkPermission.INTERACT_DOOR, true);
+        chunkPermission.put(ChunkPermission.INTERACT_BUTTON, true);
+        chunkPermission.put(ChunkPermission.INTERACT_PRESSURE_PLATE, true);
+        chunkPermission.put(ChunkPermission.PVP, true);
+        chunkPermission.put(ChunkPermission.RIDE_HORSE, true);
+
     }
 
     public String getId() {

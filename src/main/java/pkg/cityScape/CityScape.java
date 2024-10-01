@@ -1,11 +1,11 @@
 package pkg.cityScape;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import pkg.cityScape.command.TownCommand;
-import pkg.cityScape.events.PlayerJoinListener;
+import pkg.cityScape.command.TownTab;
+import pkg.cityScape.events.*;
 import pkg.cityScape.manager.CitizenManager;
 import pkg.cityScape.manager.ConfigManager;
 import pkg.cityScape.manager.RegionManager;
@@ -38,26 +38,26 @@ public final class CityScape extends JavaPlugin {
         regionManager = new RegionManager(this);
         townManager = new TownManager(this);
 
-
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(citizenManager, this), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new BlockPlaceListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new BlockBreakListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new EntityDamageByEntityListener(this), this);
+        //Bisogna testare i listener
 
         getCommand("city").setExecutor(new TownCommand(this, townManager, citizenManager, regionManager));
+        getCommand("city").setTabCompleter(new TownTab(this));
 
 
          // FAI FARE IL GET DELLE TOWN
         citizens = citizenManager.getAllCitizens();
         towns = townManager.getAllTowns();
         regions = regionManager.getAllRegions();
-        System.out.println(citizens);
-        System.out.println(towns);
 
         for (Region claim : regions.values()){
             towns.get(claim.getFk_town()).addRegion(claim);
-            System.out.println(towns.get(claim.getFk_town()).getRegions());
         }
-
-
-
     }
 
     public Town getTownByPlayerUUID(Player player){

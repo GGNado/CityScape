@@ -1,8 +1,15 @@
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/CityScape.java
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/command/TownCommand.java
+/Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/command/TownTab.java
+/Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/command/old/TownCommandOld.java
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/enums/ChunkPermission.java
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/enums/Role.java
+/Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/events/BlockBreakListener.java
+/Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/events/BlockPlaceListener.java
+/Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/events/EntityDamageByEntityListener.java
+/Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/events/PlayerInteractListener.java
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/events/PlayerJoinListener.java
+/Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/events/PlayerMoveListener.java
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/manager/CitizenManager.java
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/manager/ConfigManager.java
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/manager/RegionManager.java
@@ -10,3 +17,4 @@
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/model/Citizen.java
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/model/Region.java
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/model/Town.java
+/Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/util/PermissionCheck.java

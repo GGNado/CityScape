@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pkg.cityScape.enums.Role;
-
 import java.util.UUID;
+
 
 public class Citizen {
     private UUID uuid;
