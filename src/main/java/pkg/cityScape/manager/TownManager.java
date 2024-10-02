@@ -49,18 +49,13 @@ public class TownManager {
         townConfig.set(townKey + ".spawn.spawn_cost", town.getSpawnCost());
 
         // Inserire UUID del sindaco e vice-sindaco
-        System.out.println("F");
         if (town.getMayor() != null) {
-            System.out.println("ENTRO?");
-            System.out.println(town.getMayor().getPlayer().getName());
             townConfig.set(townKey + ".mayorUUID", town.getMayor().getPlayer().getUniqueId().toString()); // Salva l'UUID come stringa
         }
 
-        System.out.println("G");
         if (town.getComayor() != null) {
             townConfig.set(townKey + ".comayorUUID", town.getComayor().getPlayer().getUniqueId().toString());
         }
-        System.out.println("H");
         // Inserire la lista dei costruttori (builder) con UUID
         List<Citizen> builders = town.getBuilders();
         if (builders != null && !builders.isEmpty()) {
@@ -188,6 +183,21 @@ public class TownManager {
     public void updateTown(String path, boolean value){
         townConfig.set(path, value);
         saveConfig();
+    }
+
+    public List<Citizen> addCitizen(Town town, Citizen citizen){
+        List<Citizen> citizens = town.getCitizens();
+        citizens.add(citizen);
+        String townKey = "towns." + town.getId();
+        if (citizens != null && !citizens.isEmpty()) {
+            for (int i = 0; i < citizens.size(); i++) {
+                townConfig.set(townKey + ".citizens." + i, citizens.get(i).getPlayer().getUniqueId().toString());
+            }
+        }
+
+        saveConfig();
+
+        return citizens;
     }
 
     private void saveConfig() {

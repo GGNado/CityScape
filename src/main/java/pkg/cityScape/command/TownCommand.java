@@ -26,11 +26,14 @@ public class TownCommand implements CommandExecutor {
     private final CitizenManager citizenManager;
     private final RegionManager regionManager;
 
+    private HashMap<UUID, List<String>> playerInvitedTowns;
+
     public TownCommand(CityScape cityScape, TownManager townManager, CitizenManager citizenManager, RegionManager regionManager) {
         this.cityScape = cityScape;
         this.townManager = townManager;
         this.citizenManager = citizenManager;
         this.regionManager = regionManager;
+        playerInvitedTowns = new HashMap<>();
     }
 
     @Override
@@ -52,7 +55,7 @@ public class TownCommand implements CommandExecutor {
                 if (args.length == 2) {
                     handleCreateTown(player, args[1]);
                 } else {
-                    player.sendMessage(ChatColor.RED + "Usage: /town create <name>");
+                    player.sendMessage(ChatColor.RED + "Usage: /c create <name>");
                 }
                 break;
 
@@ -72,7 +75,7 @@ public class TownCommand implements CommandExecutor {
                 if (args.length == 2) {
                     handleDeposit(player, args[1]);
                 } else {
-                    player.sendMessage(ChatColor.RED + "Usage: /town deposit <amount>");
+                    player.sendMessage(ChatColor.RED + "Usage: /c deposit <amount>");
                 }
                 break;
 
@@ -86,6 +89,18 @@ public class TownCommand implements CommandExecutor {
 
             case "infoc":
                 handleRegionInfo(player);
+                break;
+            case "invite":
+                if (args.length == 2)
+                    handleInvite(player, args);
+                else
+                    player.sendMessage(ChatColor.RED + "Usage: /c invite <name>");
+                break;
+            case "accept":
+                if (args.length == 2)
+                    handleAcceptInvite(player, args);
+                else
+                    player.sendMessage(ChatColor.RED + "Usage: /c accept <Town name>");
                 break;
 
             default:
@@ -274,6 +289,68 @@ public class TownCommand implements CommandExecutor {
         regionInfo(region, player);
     }
 
+    private void handleInvite(Player sindaco, String[] args) {
+        Town town = cityScape.getTownByPlayerUUID(sindaco);
+        if (town == null) {
+            sindaco.sendMessage(ChatColor.RED + ConfigManager.getNotPartTownMessage());
+            return;
+        }
+        Player cittadino = Bukkit.getPlayer(args[1]);
+
+        if (cittadino == null) { return;}
+
+        if (!cittadino.isOnline()) {
+            sindaco.sendMessage(ChatColor.RED + ConfigManager.getPlayerNotOnline());
+            return;
+        }
+
+        if (cittadino.getUniqueId() == sindaco.getUniqueId()) return;
+
+        Town townCittadino = cityScape.getTownByPlayerUUID(cittadino);
+        if (townCittadino != null) {
+            sindaco.sendMessage(ChatColor.RED + ConfigManager.getPartTownMessage());
+            return;
+        }
+
+        sindaco.sendMessage(ChatColor.GREEN + "Invite send to: " + cittadino.getPlayer().getName());
+        cittadino.sendMessage(ChatColor.GREEN + "The town " + ChatColor.GOLD + town.getTownName() + ChatColor.GREEN + " invite you to join the town!" + ChatColor.GOLD + "/c accept " + town.getTownName());
+
+        if (!playerInvitedTowns.containsKey(cittadino.getUniqueId())){
+            List<String> citta = new ArrayList<>();
+            citta.add(town.getTownName());
+            playerInvitedTowns.put(cittadino.getUniqueId(), citta);
+        } else {
+            List<String> citta = playerInvitedTowns.get(cittadino.getUniqueId());
+            citta.add(town.getTownName());
+            playerInvitedTowns.put(cittadino.getUniqueId(), citta);
+        }
+    }
+
+    private void handleAcceptInvite(Player cittadino, String[] args) {
+        Town town = cityScape.getTownByPlayerUUID(cittadino);
+        if (town != null) {
+            cittadino.sendMessage(ChatColor.RED + ConfigManager.getPartTownMessage());
+            return;
+        }
+
+        if (!playerInvitedTowns.containsKey(cittadino.getUniqueId())) {
+            cittadino.sendMessage(ChatColor.RED + ConfigManager.getNotInvited());
+            return;
+        }
+
+        List<String> citta = playerInvitedTowns.get(cittadino.getUniqueId());
+        for (Town city : cityScape.getTowns().values()){
+            if (city.getTownName().equalsIgnoreCase(args[1]) && citta.contains(args[1])){
+                cittadino.sendMessage(ConfigManager.getPlayerJoinTown() + citta);
+                cityScape.getTowns().get(city.getId()).setCitizens(townManager.addCitizen(city, cityScape.getCitizens().get(cittadino.getUniqueId())));
+                playerInvitedTowns.remove(cittadino.getUniqueId());
+                return;
+            }
+        }
+
+        cittadino.sendMessage(ChatColor.RED + ConfigManager.getNotInvited());
+
+    }
     // -------- Helper methods --------
 
     private void createInitialRegion(Player player, Town town) {
@@ -353,10 +430,26 @@ public class TownCommand implements CommandExecutor {
     // -------- Helper methods for displaying info --------
 
     public void commandList(Player player) {
-        player.sendMessage(ChatColor.RED + "- /town help " + ChatColor.GRAY + "-> Show this list");
-        player.sendMessage(ChatColor.RED + "- /town create <name> " + ChatColor.GRAY + "-> Create a new Town ");
-        player.sendMessage(ChatColor.RED + "- /town claim " + ChatColor.GRAY + "-> Claim chunk");
-        player.sendMessage(ChatColor.RED + "- /town list " + ChatColor.GRAY + "-> Show all the towns");
+        player.sendMessage(ChatColor.RED + "- /c help " + ChatColor.GRAY + "-> Show this list");
+        player.sendMessage(ChatColor.RED + "- /c create <name> " + ChatColor.GRAY + "-> Create a new Town");
+        player.sendMessage(ChatColor.RED + "- /c claim " + ChatColor.GRAY + "-> Claim the current chunk for your town");
+        player.sendMessage(ChatColor.RED + "- /c list " + ChatColor.GRAY + "-> Show all towns on the server");
+        player.sendMessage(ChatColor.RED + "- /c info " + ChatColor.GRAY + "-> Show information about your current town");
+        player.sendMessage(ChatColor.RED + "- /c deposit <amount> " + ChatColor.GRAY + "-> Deposit gold into the town bank");
+        player.sendMessage(ChatColor.RED + "- /c spawn " + ChatColor.GRAY + "-> Teleport to your town's spawn location");
+        player.sendMessage(ChatColor.RED + "- /c set spawn " + ChatColor.GRAY + "-> Set the spawn point for your town");
+        player.sendMessage(ChatColor.RED + "- /c set public " + ChatColor.GRAY + "-> Toggle public access to your town's spawn");
+        player.sendMessage(ChatColor.RED + "- /c set cost <amount> " + ChatColor.GRAY + "-> Set the teleport cost to your town's spawn");
+        player.sendMessage(ChatColor.RED + "- /c set pvp " + ChatColor.GRAY + "-> Toggle PvP in the current chunk");
+        player.sendMessage(ChatColor.RED + "- /c set build " + ChatColor.GRAY + "-> Toggle build permissions in the current chunk");
+        player.sendMessage(ChatColor.RED + "- /c set break " + ChatColor.GRAY + "-> Toggle block-breaking permissions in the current chunk");
+        player.sendMessage(ChatColor.RED + "- /c set open_chest " + ChatColor.GRAY + "-> Toggle chest access in the current chunk");
+        player.sendMessage(ChatColor.RED + "- /c set use_furnace " + ChatColor.GRAY + "-> Toggle furnace use in the current chunk");
+        player.sendMessage(ChatColor.RED + "- /c set use_crafting_table " + ChatColor.GRAY + "-> Toggle crafting table use in the current chunk");
+        player.sendMessage(ChatColor.RED + "- /c set farm " + ChatColor.GRAY + "-> Toggle farming in the current chunk");
+        player.sendMessage(ChatColor.RED + "- /c set interact_door " + ChatColor.GRAY + "-> Toggle door interaction in the current chunk");
+        player.sendMessage(ChatColor.RED + "- /c set interact_button " + ChatColor.GRAY + "-> Toggle button and lever interaction in the current chunk");
+        player.sendMessage(ChatColor.RED + "- /c infoc " + ChatColor.GRAY + "-> Show information about the current region");
     }
 
     public void sendCityInfo(Player player, Town town) {

@@ -26,10 +26,14 @@ public class ConfigManager {
     public static String getChunkAlreadyClaimMessage(){return config.getString("chunk_already_claim");}
     public static String getOnlyMayorMessage(){return config.getString("only_mayor_message");}
     public static String getNotPartTownMessage(){return config.getString("not_part_town");}
+    public static String getPartTownMessage(){return config.getString("part_town");}
     public static String getClaimNotAdjacent(){return config.getString("claim_not_adjacent");}
     public static String getCantPlaceBlock(){return config.getString("cant_place_block");}
     public static String getCantKillAnimals(){return config.getString("cant_kill_animals");}
     public static String getCantInteractHere(){return config.getString("cant_interact_here");}
     public static String getCantKillMonster(){return config.getString("cant_kill_monster");}
     public static String getCantKillPlayer(){return config.getString("cant_kill_player");}
+    public static String getNotInvited(){return config.getString("not_invited");}
+    public static String getPlayerNotOnline(){return config.getString("player_not_online");}
+    public static String getPlayerJoinTown(){return config.getString("player_join_town");}
 }

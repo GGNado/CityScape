@@ -27,6 +27,7 @@ This project is intended for Minecraft server owners and administrators who want
 Before using **CityScape**, ensure you have:
 * Java 11+
 * Minecraft server running on Paper/Spigot
+* PlaceHolderAPI (Optional)
 
 ## Instructions for using CityScape
 Get started with **CityScape** by installing the plugin on your Minecraft server and configuring the town management options.

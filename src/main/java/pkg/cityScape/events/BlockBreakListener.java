@@ -1,5 +1,6 @@
 package pkg.cityScape.events;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,6 +19,17 @@ public class BlockBreakListener implements Listener {
     public void onBlockBreak(BlockBreakEvent e) {
         Player player = e.getPlayer();
         //if (e.getBlock().getType().equals(Material.CARROT))
+
+        if (e.getBlock().getType().equals(Material.CHEST)){
+            boolean flag = PermissionCheck.isOutOfRules(cityScape, player, e.getBlock().getChunk(), ChunkPermission.OPEN_CHEST);
+            if (flag){
+                e.setCancelled(true);
+            } else {
+                e.setCancelled(false);
+            }
+
+            return;
+        }
 
         boolean flag = PermissionCheck.isOutOfRules(cityScape, player, e.getBlock().getChunk(), ChunkPermission.BREAK);
 

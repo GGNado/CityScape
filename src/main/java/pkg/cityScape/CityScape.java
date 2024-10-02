@@ -13,6 +13,7 @@ import pkg.cityScape.manager.TownManager;
 import pkg.cityScape.model.Citizen;
 import pkg.cityScape.model.Region;
 import pkg.cityScape.model.Town;
+import pkg.cityScape.util.PlaceHolderAPI;
 
 import java.util.*;
 
@@ -33,6 +34,10 @@ public final class CityScape extends JavaPlugin {
         saveResource("towns.yml", false);
         saveResource("citizens.yml", false);
         saveResource("regions.yml", false);
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PlaceHolderAPI(this).register();
+        }
 
         citizenManager = new CitizenManager(this);
         regionManager = new RegionManager(this);

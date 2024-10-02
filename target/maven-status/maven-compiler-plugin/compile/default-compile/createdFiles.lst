@@ -3,6 +3,7 @@ pkg/cityScape/events/BlockPlaceListener.class
 pkg/cityScape/command/old/TownCommandOld.class
 pkg/cityScape/util/PermissionCheck.class
 pkg/cityScape/command/TownCommand.class
+pkg/cityScape/util/PlaceHolderAPI.class
 pkg/cityScape/enums/ChunkPermission.class
 pkg/cityScape/model/Region.class
 pkg/cityScape/manager/ConfigManager.class
