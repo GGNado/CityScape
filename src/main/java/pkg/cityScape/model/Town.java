@@ -155,4 +155,8 @@ public class Town {
     public void setSpawnCost(Integer spawnCost) {
         this.spawnCost = spawnCost;
     }
+
+    public int getCitizenCount() {
+        return citizens.size();
+    }
 }

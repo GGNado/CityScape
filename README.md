@@ -29,6 +29,28 @@ Before using **CityScape**, ensure you have:
 * Minecraft server running on Paper/Spigot
 * PlaceHolderAPI (Optional)
 
+### Using PlaceholderAPI with CityScape
+
+CityScape integrates with PlaceholderAPI to allow dynamic placeholders that can display information about towns, their gold balance, claimed regions, and citizens. Placeholders are useful for setting up scoreboards, holograms, and other dynamic in-game displays.
+
+#### Available placeholders
+
+Here is a list of the available placeholders from CityScape:
+
+| Placeholder                       | Description                                                  | Example Output                          |
+|-----------------------------------|--------------------------------------------------------------|-----------------------------------------|
+| `%CityScape_town%`                | Displays the player's current town name.                     | `Empire City`                           |
+| `%CityScape_first_bank%`          | Shows the town with the highest gold balance.                | `Golden Town: 2500 gold`                |
+| `%CityScape_second_bank%`         | Shows the town with the second highest gold balance.         | `Silver City: 1500 gold`                |
+| `%CityScape_third_bank%`          | Shows the town with the third highest gold balance.          | `Bronze Ville: 1000 gold`               |
+| `%CityScape_first_regions_claimed%`| Displays the town with the most regions claimed.             | `Empire City: 10 regions`               |
+| `%CityScape_second_regions_claimed%`| Displays the town with the second most regions claimed.      | `Golden Town: 8 regions`                |
+| `%CityScape_third_regions_claimed%`| Displays the town with the third most regions claimed.       | `Silver City: 7 regions`                |
+| `%CityScape_first_citizens%`      | Shows the town with the most citizens.                       | `Empire City: 20 citizens`              |
+| `%CityScape_second_citizens%`     | Shows the town with the second most citizens.                | `Golden Town: 15 citizens`              |
+| `%CityScape_third_citizens%`      | Shows the town with the third most citizens.                 | `Silver City: 10 citizens`              |
+
+
 ## Instructions for using CityScape
 Get started with **CityScape** by installing the plugin on your Minecraft server and configuring the town management options.
 
