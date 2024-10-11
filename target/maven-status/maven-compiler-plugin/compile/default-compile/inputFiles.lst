@@ -12,6 +12,7 @@
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/events/PlayerMoveListener.java
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/manager/CitizenManager.java
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/manager/ConfigManager.java
+/Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/manager/DynmapTerritoryManager.java
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/manager/RegionManager.java
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/manager/TownManager.java
 /Users/gigi/Desktop/PluginMC/CityScape/src/main/java/pkg/cityScape/model/Citizen.java

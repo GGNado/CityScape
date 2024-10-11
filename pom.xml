@@ -6,7 +6,7 @@
 
     <groupId>pkg</groupId>
     <artifactId>CityScape</artifactId>
-    <version>0.2.1</version>
+    <version>0.2.3</version>
     <packaging>jar</packaging>
 
     <name>CityScape</name>
@@ -77,6 +77,13 @@
             <artifactId>placeholderapi</artifactId>
             <version>2.11.6</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.dynmap</groupId>
+            <artifactId>dynmap</artifactId>
+            <version>3.3</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/Dynmap.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

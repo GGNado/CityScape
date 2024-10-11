@@ -2,14 +2,14 @@ package pkg.cityScape;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.dynmap.DynmapAPI;
+import org.dynmap.markers.MarkerSet;
 import pkg.cityScape.command.TownCommand;
 import pkg.cityScape.command.TownTab;
 import pkg.cityScape.events.*;
-import pkg.cityScape.manager.CitizenManager;
-import pkg.cityScape.manager.ConfigManager;
-import pkg.cityScape.manager.RegionManager;
-import pkg.cityScape.manager.TownManager;
+import pkg.cityScape.manager.*;
 import pkg.cityScape.model.Citizen;
 import pkg.cityScape.model.Region;
 import pkg.cityScape.model.Town;
@@ -26,6 +26,10 @@ public final class CityScape extends JavaPlugin {
     private Map<Integer, Town> towns;
     private Map<UUID, Citizen> citizens;
     private Map<String, Region> regions;
+
+    private DynmapAPI dynmapAPI;
+    private MarkerSet markerSet;
+    private DynmapTerritoryManager dynmapTerritoryManager;
 
     @Override
     public void onEnable() {
@@ -62,6 +66,20 @@ public final class CityScape extends JavaPlugin {
 
         for (Region claim : regions.values()){
             towns.get(claim.getFk_town()).addRegion(claim);
+        }
+
+        Plugin dynmap = Bukkit.getServer().getPluginManager().getPlugin("dynmap");
+        if (dynmap instanceof DynmapAPI) {
+            dynmapAPI = (DynmapAPI) dynmap;
+            getLogger().info("Dynmap API trovata!");
+            DynmapTerritoryManager dynmapTerritoryManager = new DynmapTerritoryManager(dynmapAPI, regions, townManager);
+            dynmapTerritoryManager.colorChunksOnDynmap();
+            this.dynmapTerritoryManager = dynmapTerritoryManager;
+            for (Town town : towns.values()) {
+                dynmapTerritoryManager.addTownSpawnMarker(town);
+            }
+        } else {
+            getLogger().warning("Dynmap non trovato!");
         }
     }
 
@@ -102,5 +120,13 @@ public final class CityScape extends JavaPlugin {
 
     public void addTowns(Map<Integer, Town> towns) {
         this.towns = towns;
+    }
+
+    public void setTownManager(TownManager townManager) {
+        this.townManager = townManager;
+    }
+
+    public DynmapTerritoryManager getDynmapTerritoryManager() {
+        return dynmapTerritoryManager;
     }
 }

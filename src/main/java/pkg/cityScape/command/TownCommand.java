@@ -9,10 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import pkg.cityScape.CityScape;
 import pkg.cityScape.enums.ChunkPermission;
 import pkg.cityScape.enums.Role;
-import pkg.cityScape.manager.CitizenManager;
-import pkg.cityScape.manager.ConfigManager;
-import pkg.cityScape.manager.RegionManager;
-import pkg.cityScape.manager.TownManager;
+import pkg.cityScape.manager.*;
 import pkg.cityScape.model.Citizen;
 import pkg.cityScape.model.Region;
 import pkg.cityScape.model.Town;
@@ -373,6 +370,10 @@ public class TownCommand implements CommandExecutor {
         regionManager.addRegions(region);
         cityScape.getRegions().put(region.getId(), region);
         town.addRegion(region);
+        DynmapTerritoryManager dynmapTerritoryManager = cityScape.getDynmapTerritoryManager();
+        if (dynmapTerritoryManager != null){
+            dynmapTerritoryManager.colorChunkLive(region);
+        }
     }
 
     private Map<ChunkPermission, Boolean> initializeDefaultPermissions() {
