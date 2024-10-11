@@ -28,6 +28,7 @@ Before using **CityScape**, ensure you have:
 * Java 11+
 * Minecraft server running on Paper/Spigot
 * PlaceHolderAPI (Optional)
+* Dynmap (Optional but Recommended)
 
 ### Using PlaceholderAPI with CityScape
 

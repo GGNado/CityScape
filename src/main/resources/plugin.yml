@@ -3,7 +3,7 @@ version: '0.2.3'
 main: pkg.cityScape.CityScape
 api-version: '1.21'
 authors: [ Nadoo ]
-softdepend: ["PlaceholderAPI"]
+softdepend: ["PlaceholderAPI", "dynmap"]
 commands:
   city:
     description: Comando principale per la città
