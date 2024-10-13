@@ -94,6 +94,16 @@ public final class CityScape extends JavaPlugin {
         return null;
     }
 
+    public Town getTownByName(String name) {
+        for (Town town : towns.values()) {
+            if (town.getTownName().equalsIgnoreCase(name)) {
+                return town;
+            }
+        }
+
+        return null;
+    }
+
     public TownManager getTownManager() {
         return townManager;
     }

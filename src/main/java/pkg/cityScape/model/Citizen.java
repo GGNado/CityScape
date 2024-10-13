@@ -93,4 +93,9 @@ public class Citizen {
             player.sendMessage("Non hai abbastanza lingotti d'oro nell'inventario!");
         }
     }
+
+    public void addGold(Player player, int amount) {
+        //Inventory inventory = player.getInventory();
+        player.getInventory().addItem(new ItemStack(Material.GOLD_INGOT, amount));
+    }
 }

@@ -36,4 +36,6 @@ public class ConfigManager {
     public static String getNotInvited(){return config.getString("not_invited");}
     public static String getPlayerNotOnline(){return config.getString("player_not_online");}
     public static String getPlayerJoinTown(){return config.getString("player_join_town");}
+    public static String getPlayerDeposit(){return config.getString("player_deposit");}
+    public static String getPlayerWithdraw(){return config.getString("player_withdraw");}
 }

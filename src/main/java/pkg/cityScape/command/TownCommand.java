@@ -61,7 +61,11 @@ public class TownCommand implements CommandExecutor {
                 break;
 
             case "info":
-                handleTownInfo(player);
+                if (args.length == 2) {
+                    handleTownInfo(player, cityScape.getTownByName(args[1]));
+                } else {
+                    handleTownInfo(player);
+                }
                 break;
 
             case "list":
@@ -75,9 +79,22 @@ public class TownCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + "Usage: /c deposit <amount>");
                 }
                 break;
+            case "withdraw":
+                if (args.length == 2) {
+                    handleWithdraw(player, args[1]);
+                } else {
+                    player.sendMessage(ChatColor.RED + "Usage: /c withdraw <amount>");
+                }
+
+                break;
 
             case "spawn":
-                handleSpawn(player);
+                if (args.length == 2) {
+                    handleSpawn(player, cityScape.getTownByName(args[1]));
+                } else {
+                    handleSpawn(player);
+                }
+
                 break;
 
             case "set":
@@ -190,6 +207,13 @@ public class TownCommand implements CommandExecutor {
         }
         sendCityInfo(player, town);
     }
+    private void handleTownInfo(Player player, Town town) {
+        if (town == null) {
+            player.sendMessage(ChatColor.RED + "Town not found!");
+            return;
+        }
+        sendCityInfo(player, town);
+    }
 
     private void handleDeposit(Player player, String amountStr) {
         Citizen citizen = cityScape.getCitizens().get(player.getUniqueId());
@@ -210,6 +234,40 @@ public class TownCommand implements CommandExecutor {
             citizen.removeGold(player, amount);
             town.addGold(amount);
             townManager.updateTown("towns." + town.getId() + ".goldBank", amount);
+            player.sendMessage(ChatColor.GREEN + ConfigManager.getPlayerDeposit());
+        } catch (NumberFormatException e) {
+            player.sendMessage(ChatColor.RED + "You have to enter a valid number!");
+        }
+    }
+
+    private void handleWithdraw(Player player, String amountStr) {
+        Citizen citizen = cityScape.getCitizens().get(player.getUniqueId());
+
+        if (citizen.getRole() != Role.MAYOR && citizen.getRole() != Role.COMAYOR) {
+            player.sendMessage(ChatColor.RED + ConfigManager.getOnlyMayorMessage());
+            return;
+        }
+
+
+        try {
+            int amount = Integer.parseInt(amountStr);
+            Town town = cityScape.getTownByPlayerUUID(player);
+            if (town == null) {
+                player.sendMessage(ChatColor.RED + ConfigManager.getNotPartTownMessage());
+                return;
+            }
+
+            if (town.getGoldBank() < amount){
+                player.sendMessage(ChatColor.RED + "Not enough gold in bank town!");
+                return;
+            }
+
+
+            citizen.addGold(player, amount);
+            town.removeGold(amount);
+            //System.out.println(amount + "" + " | " + town.getGoldBank());
+            townManager.updateTown("towns." + town.getId() + ".goldBank", town.getGoldBank());
+            player.sendMessage(ChatColor.GREEN + ConfigManager.getPlayerWithdraw());
 
         } catch (NumberFormatException e) {
             player.sendMessage(ChatColor.RED + "You have to enter a valid number!");
@@ -222,6 +280,27 @@ public class TownCommand implements CommandExecutor {
             player.sendMessage(ChatColor.RED + ConfigManager.getNotPartTownMessage());
             return;
         }
+        player.teleport(town.getSpawnLocation());
+        player.spawnParticle(Particle.FIREWORK, player.getLocation(), 100);
+    }
+    private void handleSpawn(Player player, Town town){
+        if (town == null) {
+            player.sendMessage(ChatColor.RED + "Town not found!");
+            return;
+        }
+
+        if (!town.isSpawnOpen()){
+            player.sendMessage(ChatColor.RED + "Town is not open for other players!");
+            return;
+        }
+
+        Citizen citizen = cityScape.getCitizens().get(player.getUniqueId());
+        if (citizen.goldInInventory(player) < town.getSpawnCost()){
+            player.sendMessage(ChatColor.RED + "You need " + ChatColor.GOLD + town.getSpawnCost() + " gold!");
+            return;
+        }
+
+        citizen.removeGold(player, town.getSpawnCost());
         player.teleport(town.getSpawnLocation());
         player.spawnParticle(Particle.FIREWORK, player.getLocation(), 100);
     }
