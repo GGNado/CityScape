@@ -28,5 +28,5 @@ player_deposit: "Deposit successfully completed!"
 
 
 #Database (ASK FOR INFO)
-enable_database: false
-nick_database: "Default" # Ask for more info
+enable_database: true
+nick_database: "Duck" # Ask for more info

@@ -52,7 +52,7 @@ public class Town {
     }
 
     public Integer getRegionsCount() {
-        return regionsCount;
+        return regions.size();
     }
 
     public Citizen getMayor() {

@@ -38,4 +38,6 @@ public class ConfigManager {
     public static String getPlayerJoinTown(){return config.getString("player_join_town");}
     public static String getPlayerDeposit(){return config.getString("player_deposit");}
     public static String getPlayerWithdraw(){return config.getString("player_withdraw");}
+    public static boolean isDatabaseEnabled(){return config.getBoolean("enable_database");}
+    public static String getNickDatabase(){return config.getString("nick_database");}
 }

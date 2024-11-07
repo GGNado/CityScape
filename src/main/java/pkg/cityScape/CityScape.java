@@ -8,6 +8,7 @@ import org.dynmap.DynmapAPI;
 import org.dynmap.markers.MarkerSet;
 import pkg.cityScape.command.TownCommand;
 import pkg.cityScape.command.TownTab;
+import pkg.cityScape.database.Database;
 import pkg.cityScape.events.*;
 import pkg.cityScape.manager.*;
 import pkg.cityScape.model.Citizen;
@@ -15,6 +16,8 @@ import pkg.cityScape.model.Region;
 import pkg.cityScape.model.Town;
 import pkg.cityScape.util.PlaceHolderAPI;
 
+import javax.xml.crypto.Data;
+import java.sql.SQLException;
 import java.util.*;
 
 public final class CityScape extends JavaPlugin {
@@ -77,6 +80,19 @@ public final class CityScape extends JavaPlugin {
             this.dynmapTerritoryManager = dynmapTerritoryManager;
             for (Town town : towns.values()) {
                 dynmapTerritoryManager.addTownSpawnMarker(town);
+
+                if (ConfigManager.isDatabaseEnabled()) {
+                    try {
+                        if (Database.getTownById(town.getId())) {
+                            Database.updateTown(town);
+                        } else {
+                            Database.addTown(town);
+                        }
+                    } catch (SQLException e) {
+                        System.err.println("Errore durante l'inserimento della città " + town.getTownName() + ": " + e.getMessage());
+                    }
+
+                }
             }
         } else {
             getLogger().warning("Dynmap non trovato!");
@@ -100,7 +116,6 @@ public final class CityScape extends JavaPlugin {
                 return town;
             }
         }
-
         return null;
     }
 

@@ -1,5 +1,8 @@
 pkg/cityScape/events/EntityDamageByEntityListener.class
+pkg/cityScape/database/Database.class
+pkg/cityScape/model/Board.class
 pkg/cityScape/events/BlockPlaceListener.class
+pkg/cityScape/enums/Proprity.class
 pkg/cityScape/command/old/TownCommandOld.class
 pkg/cityScape/util/PermissionCheck.class
 pkg/cityScape/command/TownCommand.class
@@ -16,6 +19,7 @@ pkg/cityScape/events/BlockBreakListener.class
 pkg/cityScape/model/Citizen.class
 pkg/cityScape/model/Town.class
 pkg/cityScape/manager/CitizenManager.class
+pkg/cityScape/manager/BoardManager.class
 pkg/cityScape/events/PlayerInteractListener.class
 pkg/cityScape/events/PlayerMoveListener.class
 pkg/cityScape/manager/DynmapTerritoryManager.class
