@@ -1,5 +1,5 @@
 name: CityScape
-version: '0.2.4'
+version: '0.3.0'
 main: pkg.cityScape.CityScape
 api-version: '1.21'
 authors: [ Nadoo ]
