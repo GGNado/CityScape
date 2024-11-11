@@ -84,9 +84,11 @@ public final class CityScape extends JavaPlugin {
                 if (ConfigManager.isDatabaseEnabled()) {
                     try {
                         if (Database.getTownById(town.getId())) {
-                            Database.updateTown(town);
+                            int id = Database.updateTown(town);
+                            Database.updateCitizens(town, id);
                         } else {
-                            Database.addTown(town);
+                            int id = Database.addTown(town);
+                            Database.addCitizens(town, id);
                         }
                     } catch (SQLException e) {
                         System.err.println("Errore durante l'inserimento della città " + town.getTownName() + ": " + e.getMessage());
@@ -94,6 +96,7 @@ public final class CityScape extends JavaPlugin {
 
                 }
             }
+
         } else {
             getLogger().warning("Dynmap non trovato!");
         }
